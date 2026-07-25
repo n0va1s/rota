@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-slate-50 font-sans text-slate-900 antialiased;
+    }
+}
+
+@layer components {
+    /* Acessibilidade - Foco visível */
+    .skip-link {
+        @apply absolute -top-40 left-0 bg-indigo-600 text-white px-4 py-2 z-50 transition-all focus:top-0 focus:outline-none focus:ring-4 focus:ring-indigo-300;
+    }
+
+    /* Estrutura Principal */
+    .app-container {
+        @apply min-h-screen flex flex-col;
+    }
+
+    .main-content {
+        @apply flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-16;
+    }
+
+    /* Cabeçalho */
+    .top-header {
+        @apply fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 z-40;
+    }
+
+    .top-header-inner {
+        @apply w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4;
+    }
+
+    /* Logo / Marca */
+    .brand-badge {
+        @apply flex items-center gap-3 no-underline outline-none rounded-lg focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2;
+    }
+
+    .brand-icon {
+        @apply flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold text-lg shadow-sm;
+    }
+
+    .brand-text {
+        @apply font-extrabold text-xl tracking-tight text-slate-900;
+    }
+
+    .brand-tag {
+        @apply text-[10px] uppercase font-bold tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full;
+    }
+
+    /* Navegação */
+    .top-nav {
+        @apply hidden sm:flex items-center gap-1 overflow-x-auto;
+    }
+
+    .top-nav::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .top-nav {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .nav-pill {
+        @apply px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-indigo-500;
+    }
+
+    .nav-pill.active {
+        @apply bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800;
+    }
+
+    /* Títulos de Página */
+    .page-header {
+        @apply mb-6;
+    }
+
+    .page-header .eyebrow {
+        @apply block text-xs font-bold uppercase tracking-wider text-indigo-600 mb-1;
+    }
+
+    .page-header h1 {
+        @apply text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight;
+    }
+
+    .page-header p {
+        @apply mt-2 text-sm sm:text-base text-slate-600 font-medium;
+    }
+}
