@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Enums\TipoProduto;
+use App\Enums\TipoRole;
 use App\Enums\TipoSuperintendencia;
 use App\Enums\TipoTema;
 use App\Models\Produto;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class ProdutoSeeder extends Seeder
 {
@@ -58,7 +61,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'e-Frotas',
                 'tip_tema' => TipoTema::TRANSVERSAL->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNGD->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => null,
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::API->value,
@@ -71,7 +74,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'Emissão de Laudo Toxicológico',
                 'tip_tema' => TipoTema::CONDUTORES->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNES->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => null,
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::API->value,
@@ -84,7 +87,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'Emissão CNH/PID',
                 'tip_tema' => TipoTema::CONDUTORES->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNES->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => null,
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::API->value,
@@ -136,7 +139,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'Painel Toxicológico',
                 'tip_tema' => TipoTema::CONDUTORES->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNES->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => '11282',
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::PAINEL->value,
@@ -227,7 +230,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'Integra PSP',
                 'tip_tema' => TipoTema::TRANSVERSAL->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNGD->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => null,
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::API->value,
@@ -240,7 +243,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'Suprinav',
                 'tip_tema' => TipoTema::TRANSVERSAL->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNGD->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => null,
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::API->value,
@@ -253,7 +256,7 @@ class ProdutoSeeder extends Seeder
             [
                 'nom_produto' => 'TIS',
                 'tip_tema' => TipoTema::TRANSVERSAL->value,
-                'tip_superintendencia' => TipoSuperintendencia::SUNGD->value,
+                'tip_superintendencia' => TipoSuperintendencia::SUNCF->value,
                 'cod_servico' => null,
                 'cod_produto' => null,
                 'tip_produto' => TipoProduto::API->value,
@@ -285,22 +288,22 @@ class ProdutoSeeder extends Seeder
 
         $nome = trim($nome);
         $parts = explode(' ', strtolower($nome));
-        $email = $parts[0] . '.' . end($parts) . '@serpro.gov.br';
+        $email = $parts[0].'.'.end($parts).'@serpro.gov.br';
 
         // Evitar recriar CPFs para usuários já existentes
-        $user = \App\Models\User::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
         if (! $user) {
-            $user = \App\Models\User::create([
+            $user = User::create([
                 'name' => $nome,
                 'email' => $email,
-                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'password' => Hash::make('password'),
                 'num_cpf' => fake()->numerify('###########'),
-                'tip_role' => \App\Enums\TipoRole::GESTOR->value,
+                'tip_role' => TipoRole::GESTOR->value,
             ]);
         }
 
         $produto->usuariosAutorizados()->syncWithoutDetaching([
-            $user->id => ['ind_gestor' => $isGestorPrincipal]
+            $user->id => ['ind_gestor' => $isGestorPrincipal],
         ]);
     }
 }

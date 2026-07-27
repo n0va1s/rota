@@ -27,26 +27,24 @@
         <!-- Menu Superior Fixo (Mobile e Desktop) -->
         <header class="top-header">
             <div class="top-header-inner">
-                <div class="flex items-center justify-between">
-                    <a href="{{ route('necessidade.nova') }}" class="brand-badge" aria-label="Rota Home">
-                        <div class="brand-icon">R</div>
-                        <div>
-                            <span class="brand-text">Rota</span>
-                            <span class="brand-tag ml-2">SERPRO</span>
-                        </div>
-                    </a>
-                </div>
+                <a href="{{ route('welcome') }}" class="brand-badge" aria-label="Rota Home">
+                    <div class="brand-icon">R</div>
+                    <div>
+                        <span class="brand-text">Rota</span>
+                        <span class="brand-tag ml-2">SERPRO</span>
+                    </div>
+                </a>
 
                 <!-- Navegação Superior Horizontal -->
                 <nav class="top-nav" aria-label="Navegação principal">
                     <a href="{{ route('necessidade.nova') }}" class="nav-pill @if(request()->routeIs('necessidade.nova')) active @endif">
-                        <span>Nova necessidade</span>
+                        <span>Necessidade</span>
                     </a>
                     <a href="{{ route('gestor.dashboard') }}" class="nav-pill @if(request()->routeIs('gestor.dashboard')) active @endif">
                         <span>Dashboard</span>
                     </a>
                     <a href="{{ route('mural.votacao') }}" class="nav-pill @if(request()->routeIs('mural.votacao')) active @endif">
-                        <span>Mural de votação</span>
+                        <span>Votação</span>
                     </a>
                     <a href="{{ route('pesquisa.satisfacao') }}" class="nav-pill @if(request()->routeIs('pesquisa.satisfacao')) active @endif">
                         <span>Satisfação</span>
@@ -55,6 +53,15 @@
                         <span>Ranking</span>
                     </a>
                 </nav>
+
+                @if ($userLogado = auth()->user() ?? \App\Models\User::first())
+                    <div class="flex flex-col items-end justify-center text-xs text-slate-700 font-semibold whitespace-nowrap">
+                        <span class="text-xs text-slate-900 font-bold leading-tight">{{ $userLogado->name }}</span>
+                        <flux:badge :color="$userLogado->tip_role?->color() ?? 'indigo'" size="sm" class="mt-0.5">
+                            {{ $userLogado->tip_role?->label() ?? 'Usuário' }}
+                        </flux:badge>
+                    </div>
+                @endif
             </div>
         </header>
 

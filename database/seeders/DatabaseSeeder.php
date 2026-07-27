@@ -6,13 +6,13 @@ use App\Enums\AcaoArtefato;
 use App\Enums\CategoriaArtefato;
 use App\Enums\StatusNecessidade;
 use App\Enums\TipoCriterio;
+use App\Enums\TipoRole;
 use App\Models\Artefato;
 use App\Models\Necessidade;
 use App\Models\Produto;
 use App\Models\ProdutoSatisfacao;
 use App\Models\User;
 use App\Models\Voto;
-use App\Enums\TipoRole;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,12 +28,11 @@ class DatabaseSeeder extends Seeder
             ['email' => 'joao.novais@serpro.gov.br'],
             ['name' => 'João Paulo Novais', 'password' => Hash::make('password'), 'num_cpf' => '85236250110', 'tip_role' => TipoRole::ADMIN->value]
         );
-        
+
         $daniele = User::firstOrCreate(
             ['email' => 'daniele.farias@serpro.gov.br'],
             ['name' => 'Daniele Farias', 'password' => Hash::make('password'), 'num_cpf' => '11111111111', 'tip_role' => TipoRole::GESTOR->value]
         );
-
 
         $alan = User::firstOrCreate(
             ['email' => 'alan.daniel@serpro.gov.br'],

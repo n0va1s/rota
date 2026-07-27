@@ -29,7 +29,7 @@ test('permite votar e alternar voto apenas em necessidades aprovadas pelo gestor
         'usu_inclusao' => $user->id,
     ]);
 
-    $service = new VotacaoService();
+    $service = new VotacaoService;
 
     // Votar em necessidade não aprovada deve lançar exceção
     expect(fn () => $service->votar($user, $necessidadePendente))

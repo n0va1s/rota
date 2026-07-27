@@ -19,7 +19,7 @@ test('registra pesquisa de satisfacao normalizada e exige texto de frustracao se
         'eml_responsavel' => 'gestor@serpro.gov.br',
     ]);
 
-    $service = new SatisfacaoService();
+    $service = new SatisfacaoService;
 
     // Nota baixa sem justificativa de frustração deve lançar exceção
     $avaliacoesComNotaBaixa = [

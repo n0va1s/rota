@@ -1,9 +1,22 @@
 <?php
 
+use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 use function Livewire\Volt\computed;
+
+$rankingGestoresDisponibilizadas = computed(function () {
+    return Produto::select('produtos.nom_gestor', DB::raw('count(necessidades.idt_necessidade) as total'))
+        ->join('necessidades', 'necessidades.idt_produto', '=', 'produtos.idt_produto')
+        ->where('necessidades.tip_status', 'disponibilizada')
+        ->whereNotNull('produtos.nom_gestor')
+        ->where('produtos.nom_gestor', '!=', '')
+        ->groupBy('produtos.nom_gestor')
+        ->orderByDesc('total')
+        ->take(10)
+        ->get();
+});
 
 $rankingSugeridas = computed(function () {
     return User::select('users.id', 'users.name', DB::raw('count(necessidades.idt_necessidade) as total'))
@@ -29,58 +42,93 @@ $rankingAprovadas = computed(function () {
     <div class="page-header">
         <span class="eyebrow">Engajamento &amp; Reconhecimento</span>
         <h1>Ranking de contribuidores</h1>
-        <p>Quem mais colabora com necessidades e tem mais ideias aprovadas pelos gestores.</p>
+        <p>Acompanhe os gestores com mais entregas concluídas e os usuários que mais sugerem e têm ideias aprovadas.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-        <!-- Lista 1: Mais necessidades sugeridas -->
-        <x-card class="space-y-4">
-            <div class="border-b border-slate-100 pb-3">
-                <h2 class="text-lg font-bold text-slate-900">Mais necessidades sugeridas</h2>
-                <p class="text-xs text-slate-500">Total de necessidades registradas por pessoa.</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 items-start">
+        <!-- Lista 1: Gestores com mais entregas (Disponibilizadas) -->
+        <x-card class="space-y-4 border border-indigo-200/80 p-5 sm:p-6">
+            <div class="border-b border-slate-100 pb-3.5 space-y-1">
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <flux:icon name="trophy" class="w-4 h-4 text-indigo-600 shrink-0" />
+                    <span>Mais entregas</span>
+                </h2>
+                <p class="text-xs text-slate-500 leading-relaxed">Gestores com mais necessidades disponibilizadas no produto.</p>
             </div>
 
             <ol class="divide-y divide-slate-100 list-none p-0 m-0 space-y-1">
-                @forelse ($this->rankingSugeridas as $index => $user)
-                    <li class="py-3 px-2 flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm {{ $index === 0 ? 'bg-amber-100 text-amber-800' : ($index === 1 ? 'bg-slate-200 text-slate-700' : ($index === 2 ? 'bg-amber-50 text-amber-700' : 'bg-slate-50 text-slate-500')) }}">
+                @forelse ($this->rankingGestoresDisponibilizadas as $index => $gestor)
+                    <li class="py-2.5 px-2 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs {{ $index === 0 ? 'bg-amber-400 text-white shadow-xs' : ($index === 1 ? 'bg-slate-300 text-slate-800' : ($index === 2 ? 'bg-amber-700 text-white' : 'bg-slate-100 text-slate-600')) }}">
                                 {{ $index + 1 }}º
                             </span>
-                            <span class="font-bold text-slate-800 text-sm sm:text-base">{{ $user->name }}</span>
+                            <span class="font-bold text-slate-800 text-xs sm:text-sm">{{ $gestor->nom_gestor }}</span>
                         </div>
-                        <x-badge variant="teal">
-                            {{ $user->total }} {{ Str::plural('necessidade', $user->total) }}
+                        <x-badge variant="primary" size="sm">
+                            {{ $gestor->total }} {{ Str::plural('entregue', $gestor->total) }}
                         </x-badge>
                     </li>
                 @empty
-                    <li class="py-6 text-center text-xs text-slate-500">Nenhum registro encontrado.</li>
+                    <li class="py-6 text-center text-xs text-slate-400 italic">Nenhum gestor com necessidade disponibilizada no momento.</li>
                 @endforelse
             </ol>
         </x-card>
 
-        <!-- Lista 2: Mais ideias aprovadas -->
-        <x-card class="space-y-4">
-            <div class="border-b border-slate-100 pb-3">
-                <h2 class="text-lg font-bold text-slate-900">Mais ideias aprovadas</h2>
-                <p class="text-xs text-slate-500">Necessidades com aprovação formal do gestor.</p>
+        <!-- Lista 2: Mais necessidades sugeridas -->
+        <x-card class="space-y-4 p-5 sm:p-6">
+            <div class="border-b border-slate-100 pb-3.5 space-y-1">
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <flux:icon name="light-bulb" class="w-4 h-4 text-teal-600 shrink-0" />
+                    <span>Mais necessidades sugeridas</span>
+                </h2>
+                <p class="text-xs text-slate-500 leading-relaxed">Total de necessidades registradas por pessoa.</p>
+            </div>
+
+            <ol class="divide-y divide-slate-100 list-none p-0 m-0 space-y-1">
+                @forelse ($this->rankingSugeridas as $index => $user)
+                    <li class="py-2.5 px-2 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs {{ $index === 0 ? 'bg-amber-400 text-white shadow-xs' : ($index === 1 ? 'bg-slate-300 text-slate-800' : ($index === 2 ? 'bg-amber-700 text-white' : 'bg-slate-100 text-slate-600')) }}">
+                                {{ $index + 1 }}º
+                            </span>
+                            <span class="font-bold text-slate-800 text-xs sm:text-sm">{{ $user->name }}</span>
+                        </div>
+                        <x-badge variant="teal" size="sm">
+                            {{ $user->total }} {{ Str::plural('necessidade', $user->total) }}
+                        </x-badge>
+                    </li>
+                @empty
+                    <li class="py-6 text-center text-xs text-slate-400 italic">Nenhum registro encontrado.</li>
+                @endforelse
+            </ol>
+        </x-card>
+
+        <!-- Lista 3: Mais ideias aprovadas -->
+        <x-card class="space-y-4 p-5 sm:p-6">
+            <div class="border-b border-slate-100 pb-3.5 space-y-1">
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <flux:icon name="check-badge" class="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>Mais ideias aprovadas</span>
+                </h2>
+                <p class="text-xs text-slate-500 leading-relaxed">Necessidades com aprovação formal do gestor.</p>
             </div>
 
             <ol class="divide-y divide-slate-100 list-none p-0 m-0 space-y-1">
                 @forelse ($this->rankingAprovadas as $index => $user)
-                    <li class="py-3 px-2 flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm {{ $index === 0 ? 'bg-amber-100 text-amber-800' : ($index === 1 ? 'bg-slate-200 text-slate-700' : ($index === 2 ? 'bg-amber-50 text-amber-700' : 'bg-slate-50 text-slate-500')) }}">
+                    <li class="py-2.5 px-2 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs {{ $index === 0 ? 'bg-amber-400 text-white shadow-xs' : ($index === 1 ? 'bg-slate-300 text-slate-800' : ($index === 2 ? 'bg-amber-700 text-white' : 'bg-slate-100 text-slate-600')) }}">
                                 {{ $index + 1 }}º
                             </span>
-                            <span class="font-bold text-slate-800 text-sm sm:text-base">{{ $user->name }}</span>
+                            <span class="font-bold text-slate-800 text-xs sm:text-sm">{{ $user->name }}</span>
                         </div>
-                        <x-badge variant="amber">
+                        <x-badge variant="amber" size="sm">
                             {{ $user->total }} {{ Str::plural('aprovada', $user->total) }}
                         </x-badge>
                     </li>
                 @empty
-                    <li class="py-6 text-center text-xs text-slate-500">Nenhuma ideia aprovada no momento.</li>
+                    <li class="py-6 text-center text-xs text-slate-400 italic">Nenhuma ideia aprovada no momento.</li>
                 @endforelse
             </ol>
         </x-card>

@@ -5,7 +5,6 @@ use Livewire\Volt\Volt;
 
 Volt::route('/', 'welcome')->name('welcome');
 
-
 Route::middleware('auth')->group(function () {
     Volt::route('/necessidade/nova', 'necessidade-form')->name('necessidade.nova');
     Volt::route('/dashboard', 'gestor-dashboard')->name('gestor.dashboard');

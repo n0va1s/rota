@@ -25,6 +25,14 @@ class Necessidade extends Model
         'idt_solicitante',
         'tip_status',
         'ind_aprovado',
+        'ind_nova_oferta',
+        'ind_diferenciacao',
+        'ind_novos_clientes',
+        'ind_reduz_custo',
+        'ind_desoneracao',
+        'ind_urgente',
+        'ind_roi_alinhado',
+        'txt_parecer_gestor',
         'usu_inclusao',
         'usu_alteracao',
     ];
@@ -34,6 +42,13 @@ class Necessidade extends Model
         return [
             'tip_status' => StatusNecessidade::class,
             'ind_aprovado' => 'boolean',
+            'ind_nova_oferta' => 'boolean',
+            'ind_diferenciacao' => 'boolean',
+            'ind_novos_clientes' => 'boolean',
+            'ind_reduz_custo' => 'boolean',
+            'ind_desoneracao' => 'boolean',
+            'ind_urgente' => 'boolean',
+            'ind_roi_alinhado' => 'boolean',
         ];
     }
 

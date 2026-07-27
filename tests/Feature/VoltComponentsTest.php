@@ -10,12 +10,20 @@ uses(RefreshDatabase::class);
 
 test('rota principal renderiza formulario de necessidade com sucesso', function () {
     $user = User::factory()->create();
+    $produto = Produto::create([
+        'nom_produto' => 'Produto Teste Form',
+        'tip_tema' => 'transito',
+        'tip_superintendencia' => 'suncf',
+        'tip_produto' => 'api',
+        'nom_gestor' => 'Luciano Fernandes',
+        'eml_responsavel' => 'luciano@serpro.gov.br',
+    ]);
 
-    $response = $this->actingAs($user)->get(route('necessidade.nova'));
+    $response = $this->actingAs($user)->get(route('necessidade.nova', ['produto' => $produto->idt_produto]));
 
     $response->assertStatus(200)
-        ->assertSee('Registrar necessidade')
-        ->assertSee('Esforço Técnico Estimado');
+        ->assertSee('Nova Necessidade')
+        ->assertSee('Identificação da Necessidade');
 });
 
 test('componente necessidade-form salva nova necessidade', function () {
@@ -72,7 +80,8 @@ test('rota gestor-dashboard exibe necessidades e permite acao de aprovacao', fun
         ->assertSee('Necessidade para aprovação');
 
     Volt::test('gestor-dashboard')
-        ->call('aprovar', $necessidade->idt_necessidade);
+        ->call('abrirAvaliacao', $necessidade->idt_necessidade)
+        ->call('salvarAvaliacao', true);
 
     expect($necessidade->fresh()->ind_aprovado)->toBeTrue();
 });
