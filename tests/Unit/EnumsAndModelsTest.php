@@ -54,7 +54,7 @@ test('testa relacionamentos e accessors de models', function () {
         'tip_tema' => 'transito',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'api',
-        'nom_gestor' => 'Gestor Teste',
+        'idt_gestor' => $user->id,
         'eml_responsavel' => 'gestor@test.com',
     ]);
 

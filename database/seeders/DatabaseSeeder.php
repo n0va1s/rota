@@ -24,6 +24,21 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. Criar usuários principais de teste
+        User::firstOrCreate(
+            ['email' => 'usuario@email.com'],
+            ['name' => 'Usuário Comum', 'password' => Hash::make('password'), 'num_cpf' => '00000000001', 'tip_role' => TipoRole::USER->value]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'gestor@email.com'],
+            ['name' => 'Gestor de Produtos', 'password' => Hash::make('password'), 'num_cpf' => '00000000002', 'tip_role' => TipoRole::GESTOR->value]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'admin@email.com'],
+            ['name' => 'Administrador', 'password' => Hash::make('password'), 'num_cpf' => '00000000003', 'tip_role' => TipoRole::ADMIN->value]
+        );
+
         $admin = User::firstOrCreate(
             ['email' => 'joao.novais@serpro.gov.br'],
             ['name' => 'João Paulo Novais', 'password' => Hash::make('password'), 'num_cpf' => '85236250110', 'tip_role' => TipoRole::ADMIN->value]

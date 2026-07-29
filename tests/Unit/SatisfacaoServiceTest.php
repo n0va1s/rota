@@ -15,7 +15,6 @@ test('registra pesquisa de satisfacao normalizada e exige texto de frustracao se
         'tip_tema' => 'transito',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'painel',
-        'nom_gestor' => 'Gestor Teste',
         'eml_responsavel' => 'gestor@serpro.gov.br',
     ]);
 

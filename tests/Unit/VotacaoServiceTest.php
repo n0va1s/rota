@@ -15,7 +15,6 @@ test('permite votar e alternar voto apenas em necessidades aprovadas pelo gestor
         'tip_tema' => 'transito',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'api',
-        'nom_gestor' => 'Gestor Teste',
         'eml_responsavel' => 'gestor@serpro.gov.br',
     ]);
 

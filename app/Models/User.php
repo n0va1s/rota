@@ -34,6 +34,21 @@ class User extends Authenticatable
         ];
     }
 
+    public function isGestor(): bool
+    {
+        return $this->tip_role === TipoRole::GESTOR;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->tip_role === TipoRole::ADMIN;
+    }
+
+    public function isGestorOuAdmin(): bool
+    {
+        return in_array($this->tip_role, [TipoRole::GESTOR, TipoRole::ADMIN], true);
+    }
+
     public function produtosAutorizados(): BelongsToMany
     {
         return $this->belongsToMany(Produto::class, 'produto_autorizacao', 'user_id', 'idt_produto')

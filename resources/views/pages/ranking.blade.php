@@ -7,12 +7,11 @@ use Illuminate\Support\Facades\DB;
 use function Livewire\Volt\computed;
 
 $rankingGestoresDisponibilizadas = computed(function () {
-    return Produto::select('produtos.nom_gestor', DB::raw('count(necessidades.idt_necessidade) as total'))
+    return User::select('users.name', DB::raw('count(necessidades.idt_necessidade) as total'))
+        ->join('produtos', 'produtos.idt_gestor', '=', 'users.id')
         ->join('necessidades', 'necessidades.idt_produto', '=', 'produtos.idt_produto')
         ->where('necessidades.tip_status', 'disponibilizada')
-        ->whereNotNull('produtos.nom_gestor')
-        ->where('produtos.nom_gestor', '!=', '')
-        ->groupBy('produtos.nom_gestor')
+        ->groupBy('users.id', 'users.name')
         ->orderByDesc('total')
         ->take(10)
         ->get();
@@ -63,7 +62,7 @@ $rankingAprovadas = computed(function () {
                             <span class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs {{ $index === 0 ? 'bg-amber-400 text-white shadow-xs' : ($index === 1 ? 'bg-slate-300 text-slate-800' : ($index === 2 ? 'bg-amber-700 text-white' : 'bg-slate-100 text-slate-600')) }}">
                                 {{ $index + 1 }}º
                             </span>
-                            <span class="font-bold text-slate-800 text-xs sm:text-sm">{{ $gestor->nom_gestor }}</span>
+                            <span class="font-bold text-slate-800 text-xs sm:text-sm">{{ $gestor->name }}</span>
                         </div>
                         <x-badge variant="primary" size="sm">
                             {{ $gestor->total }} {{ Str::plural('entregue', $gestor->total) }}

@@ -15,7 +15,6 @@ test('rota principal renderiza formulario de necessidade com sucesso', function 
         'tip_tema' => 'transito',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'api',
-        'nom_gestor' => 'Luciano Fernandes',
         'eml_responsavel' => 'luciano@serpro.gov.br',
     ]);
 
@@ -33,7 +32,6 @@ test('componente necessidade-form salva nova necessidade', function () {
         'tip_tema' => 'transito',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'api',
-        'nom_gestor' => 'Luciano Fernandes',
         'eml_responsavel' => 'luciano@serpro.gov.br',
     ]);
 
@@ -59,7 +57,6 @@ test('rota gestor-dashboard exibe necessidades e permite acao de aprovacao', fun
         'tip_tema' => 'veiculos',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'painel',
-        'nom_gestor' => 'Gestor Teste',
         'eml_responsavel' => 'gestor@serpro.gov.br',
     ]);
 
@@ -93,7 +90,6 @@ test('mural-votacao exibe necessidades aprovadas e permite alternar votos', func
         'tip_tema' => 'veiculos',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'painel',
-        'nom_gestor' => 'Gestor Teste',
         'eml_responsavel' => 'gestor@serpro.gov.br',
     ]);
 
@@ -129,7 +125,6 @@ test('pesquisa-satisfacao permite submeter respostas', function () {
         'tip_tema' => 'transito',
         'tip_superintendencia' => 'suncf',
         'tip_produto' => 'api',
-        'nom_gestor' => 'Luciano Fernandes',
         'eml_responsavel' => 'luciano@serpro.gov.br',
     ]);
 

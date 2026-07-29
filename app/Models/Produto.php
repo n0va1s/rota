@@ -8,6 +8,7 @@ use App\Enums\TipoTema;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,8 +28,8 @@ class Produto extends Model
         'cod_servico',
         'cod_produto',
         'tip_produto',
-        'nom_gestor',
-        'nom_substituto',
+        'idt_gestor',
+        'idt_substituto',
         'eml_responsavel',
         'url_loja',
         'url_central_ajuda',
@@ -41,6 +42,16 @@ class Produto extends Model
             'tip_superintendencia' => TipoSuperintendencia::class,
             'tip_produto' => TipoProduto::class,
         ];
+    }
+
+    public function gestor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'idt_gestor', 'id');
+    }
+
+    public function substituto(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'idt_substituto', 'id');
     }
 
     public function necessidades(): HasMany

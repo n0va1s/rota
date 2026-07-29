@@ -81,7 +81,7 @@ new class extends Component {
 
         return [
             'produtos' => Produto::orderBy('nom_produto')->get(),
-            'produtoSelecionado' => $this->idt_produto ? Produto::with('satisfacoes.usuario')->find($this->idt_produto) : null,
+            'produtoSelecionado' => $this->idt_produto ? Produto::with(['gestor', 'satisfacoes.usuario'])->find($this->idt_produto) : null,
             'minhaAvaliacao' => $minhaAvaliacao,
             'ultimasCincoAvaliacoes' => $ultimasCincoAvaliacoes,
         ];
@@ -192,7 +192,7 @@ new class extends Component {
                         </span>
                     </div>
                     <h2 class="text-xl font-extrabold text-slate-900">{{ $produtoSelecionado->nom_produto }}</h2>
-                    <p class="text-xs text-slate-500 font-medium">Gestor: {{ $produtoSelecionado->nom_gestor ?? 'Não informado' }} | Tipo: {{ strtoupper($produtoSelecionado->tip_produto->value) }}</p>
+                    <p class="text-xs text-slate-500 font-medium">Gestor: {{ $produtoSelecionado->gestor?->name ?? 'Não informado' }} | Tipo: {{ strtoupper($produtoSelecionado->tip_produto->value) }}</p>
                 </div>
                 <div class="flex items-center gap-3">
                     @php

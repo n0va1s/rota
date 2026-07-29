@@ -269,28 +269,40 @@ class ProdutoSeeder extends Seeder
         ];
 
         foreach ($produtos as $p) {
+            $nomGestor = $p['nom_gestor'] ?? null;
+            $nomSubstituto = $p['nom_substituto'] ?? null;
+            unset($p['nom_gestor'], $p['nom_substituto']);
+
+            $gestorUser = $this->importarUsuario($nomGestor);
+            $substitutoUser = $this->importarUsuario($nomSubstituto);
+
+            $p['idt_gestor'] = $gestorUser?->id;
+            $p['idt_substituto'] = $substitutoUser?->id;
+
             $prod = Produto::updateOrCreate(
                 ['nom_produto' => $p['nom_produto']],
                 $p
             );
 
-            // Import users and link to product autorizacao
-            $this->importarUsuarioEAutorizar($prod, $p['nom_gestor'], true);
-            $this->importarUsuarioEAutorizar($prod, $p['nom_substituto'], false);
+            if ($gestorUser) {
+                $prod->usuariosAutorizados()->syncWithoutDetaching([$gestorUser->id => ['ind_gestor' => true]]);
+            }
+            if ($substitutoUser) {
+                $prod->usuariosAutorizados()->syncWithoutDetaching([$substitutoUser->id => ['ind_gestor' => false]]);
+            }
         }
     }
 
-    private function importarUsuarioEAutorizar(Produto $produto, ?string $nome, bool $isGestorPrincipal): void
+    private function importarUsuario(?string $nome): ?User
     {
         if (empty($nome) || mb_strtolower(trim($nome)) === 'não há') {
-            return;
+            return null;
         }
 
         $nome = trim($nome);
         $parts = explode(' ', strtolower($nome));
         $email = $parts[0].'.'.end($parts).'@serpro.gov.br';
 
-        // Evitar recriar CPFs para usuários já existentes
         $user = User::where('email', $email)->first();
         if (! $user) {
             $user = User::create([
@@ -302,8 +314,6 @@ class ProdutoSeeder extends Seeder
             ]);
         }
 
-        $produto->usuariosAutorizados()->syncWithoutDetaching([
-            $user->id => ['ind_gestor' => $isGestorPrincipal],
-        ]);
+        return $user;
     }
 }

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('cod_servico')->nullable();
             $table->string('cod_produto')->nullable();
             $table->string('tip_produto');
-            $table->string('nom_gestor');
-            $table->string('nom_substituto')->nullable();
+            $table->foreignUuid('idt_gestor')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignUuid('idt_substituto')->nullable()->constrained('users')->nullOnDelete();
             $table->string('eml_responsavel');
             $table->string('url_loja')->nullable();
             $table->string('url_central_ajuda')->nullable();

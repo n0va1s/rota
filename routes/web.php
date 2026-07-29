@@ -11,5 +11,8 @@ Route::middleware('auth')->group(function () {
     Volt::route('/mural', 'mural-votacao')->name('mural.votacao');
     Volt::route('/satisfacao', 'pesquisa-satisfacao')->name('pesquisa.satisfacao');
     Volt::route('/ranking', 'ranking')->name('ranking');
+    Route::view('/profile', 'profile')->name('profile');
+    Route::post('/logout', App\Livewire\Actions\Logout::class)->name('logout');
 });
 require __DIR__.'/auth.php';
+
