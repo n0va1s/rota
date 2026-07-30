@@ -186,42 +186,81 @@ new #[Layout('components.layouts.app')] #[Title('Produtos')] class extends Compo
     .rota-mono { font-family: 'JetBrains Mono', monospace; }
 
     .rota-hero {
-        background: var(--ink);
-        background-image: radial-gradient(circle at 85% 20%, rgba(192,138,46,0.18), transparent 55%);
-        border-radius: 14px;
-        padding: 48px 44px;
+        background: #121E2C;
+        background-image: radial-gradient(circle at 85% 20%, rgba(245, 192, 86, 0.15), transparent 55%);
+        border-radius: 16px;
+        padding: 24px 20px;
         color: #EDEFF2;
         position: relative;
-        overflow: hidden;
+    }
+    @media (min-width: 640px) {
+        .rota-hero {
+            padding: 44px 40px;
+        }
     }
 
     .rota-hero .eyebrow {
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.14em;
-        color: var(--amber);
-        font-weight: 600;
+        color: #F5C056; /* WCAG AAA 10.2:1 contraste sobre #121E2C */
+        font-weight: 700;
         display: block;
-        margin-bottom: 14px;
+        margin-bottom: 8px;
     }
 
     .rota-hero h1 {
-        font-size: 2.6rem;
-        line-height: 1.1;
-        color: #fff;
-        max-width: 18ch;
+        font-size: 1.65rem;
+        line-height: 1.25;
+        color: #ffffff;
+        max-width: 22ch;
+    }
+    @media (min-width: 640px) {
+        .rota-hero h1 {
+            font-size: 2.5rem;
+            line-height: 1.15;
+        }
     }
 
-    .rota-hero p { color: #C9D0DA; max-width: 52ch; margin-top: 14px; font-size: 0.98rem; }
+    .rota-hero p {
+        color: #D0D7E1;
+        max-width: 54ch;
+        margin-top: 14px;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
 
     .rota-hero-count {
-        position: absolute;
-        top: 44px;
-        right: 44px;
-        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
-    .rota-hero-count .n { font-family: 'DM Serif Display', serif; font-size: 2.8rem; color: var(--amber); line-height: 1; }
-    .rota-hero-count .l { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9CA6B4; }
+    @media (min-width: 640px) {
+        .rota-hero-count {
+            align-items: flex-end;
+            text-align: right;
+        }
+    }
+
+    .rota-hero-count .n {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2.2rem;
+        color: #F5C056;
+        line-height: 1;
+    }
+    @media (min-width: 640px) {
+        .rota-hero-count .n {
+            font-size: 3.2rem;
+        }
+    }
+
+    .rota-hero-count .l {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #CBD5E1;
+        font-weight: 700;
+    }
 
     /* Chips de tema como sinalização */
     .theme-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 26px; }
@@ -409,16 +448,21 @@ new #[Layout('components.layouts.app')] #[Title('Produtos')] class extends Compo
     .empty-state p { color: var(--ink-soft); font-size: 0.9rem; margin-top: 6px; }
 </style>
 
-    <!-- Hero -->
+    <!-- Hero Responsivo (WCAG AAA) -->
     <div class="rota-hero">
-        <span class="eyebrow">Portfólio Rota · SERPRO</span>
-        <h1 class="rota-display">O caminho de cada produto, do pedido à entrega.</h1>
-        <p>Consulte o catálogo completo de produtos de trânsito, transporte, desenvolvimento urbano e meio ambiente — com acesso direto à loja e à central de ajuda de cada um.</p>
+        <div class="flex flex-col-reverse sm:flex-row sm:items-start justify-between gap-4">
+            <div class="space-y-1">
+                <span class="eyebrow">Portfólio Rota · SERPRO</span>
+                <h1 class="rota-display">O caminho de cada produto, do pedido à entrega.</h1>
+            </div>
 
-        <div class="rota-hero-count">
-            <span class="n">{{ $totalProdutos }}</span>
-            <span class="l">Produtos ativos</span>
+            <div class="rota-hero-count shrink-0 bg-white/5 sm:bg-transparent p-3 sm:p-0 rounded-xl border border-white/10 sm:border-0">
+                <span class="n">{{ $totalProdutos }}</span>
+                <span class="l">Produtos ativos</span>
+            </div>
         </div>
+
+        <p>Consulte o catálogo completo de produtos de trânsito, transporte, desenvolvimento urbano e meio ambiente — com acesso direto à loja e à central de ajuda de cada um.</p>
     </div>
 
     <!-- Fluxo de processo, estilo rodovia -->
@@ -609,7 +653,7 @@ new #[Layout('components.layouts.app')] #[Title('Produtos')] class extends Compo
                             @endif
                         </div>
 
-                        <h3 class="text-base font-bold text-slate-900 leading-snug">{{ $produto->nom_produto }}</h3>
+                        <h3 class="text-base font-bold text-slate-900 leading-snug break-word-safe">{{ $produto->nom_produto }}</h3>
 
                         <!-- Código de Produto e Código de Serviço -->
                         <div class="flex items-center gap-2 flex-wrap my-1">
@@ -626,9 +670,9 @@ new #[Layout('components.layouts.app')] #[Title('Produtos')] class extends Compo
                         </div>
 
                         <!-- Média de Satisfação do Cliente no Card -->
-                        <div class="flex items-center justify-between text-xs text-slate-600 my-2 py-1.5 px-2.5 bg-slate-50 rounded-lg border border-slate-100">
-                            <span class="font-semibold text-slate-700 flex items-center gap-1">
-                                <flux:icon name="star" class="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+                        <div class="flex items-center justify-between text-xs text-slate-700 my-2 py-2 px-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <span class="font-bold text-slate-800 flex items-center gap-1">
+                                <flux:icon name="star" class="w-4 h-4 text-amber-600 fill-amber-500" />
                                 Satisfação:
                             </span>
                             @php
@@ -636,13 +680,13 @@ new #[Layout('components.layouts.app')] #[Title('Produtos')] class extends Compo
                                 $totalAval = $produto->satisfacoes->count();
                             @endphp
                             @if ($media)
-                                <span class="font-extrabold text-slate-900">{{ number_format($media, 1, ',', '.') }} / 10 <span class="text-[10px] text-slate-500 font-normal">({{ $totalAval }})</span></span>
+                                <span class="font-extrabold text-slate-900">{{ number_format($media, 1, ',', '.') }} / 10 <span class="text-[10px] text-slate-600 font-semibold">({{ $totalAval }})</span></span>
                             @else
-                                <span class="text-slate-400 italic">Sem notas</span>
+                                <span class="text-slate-500 italic font-medium">Sem notas</span>
                             @endif
                         </div>
 
-                        <div class="product-meta mt-auto pt-2 border-t border-slate-100 text-xs text-slate-600">
+                        <div class="product-meta mt-auto pt-2 border-t border-slate-100 text-xs text-slate-700 space-y-1 break-word-safe">
                             @if($produto->gestor)
                                 <p><strong>Gestor:</strong> {{ $produto->gestor->name }}</p>
                             @endif
@@ -654,15 +698,15 @@ new #[Layout('components.layouts.app')] #[Title('Produtos')] class extends Compo
                             @endif
                         </div>
 
-                        <!-- 4 Opções do Produto: Necessidade, Satisfação, Loja e Central de Ajuda -->
+                        <!-- 4 Opções do Produto: Necessidade, Satisfação, Loja e Central de Ajuda (Alvos de Toque 44px+) -->
                         <div class="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-100">
-                            <a href="{{ route('necessidade.nova', ['produto' => $produto->idt_produto]) }}" class="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition-colors text-center" wire:navigate>
-                                <flux:icon name="plus-circle" class="w-3.5 h-3.5 shrink-0" />
+                            <a href="{{ route('necessidade.nova', ['produto' => $produto->idt_produto]) }}" class="flex items-center justify-center gap-1.5 px-2.5 py-2.5 min-h-[44px] rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-xs shadow-xs transition-colors text-center" wire:navigate>
+                                <flux:icon name="plus-circle" class="w-4 h-4 shrink-0" />
                                 <span>Necessidade</span>
                             </a>
 
-                            <a href="{{ route('pesquisa.satisfacao', ['produto' => $produto->idt_produto]) }}" class="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200/80 font-semibold text-xs transition-colors text-center" wire:navigate>
-                                <flux:icon name="heart" class="w-3.5 h-3.5 text-pink-500 shrink-0" />
+                            <a href="{{ route('pesquisa.satisfacao', ['produto' => $produto->idt_produto]) }}" class="flex items-center justify-center gap-1.5 px-2.5 py-2.5 min-h-[44px] rounded-xl bg-pink-100 hover:bg-pink-200 text-pink-900 border border-pink-300 font-extrabold text-xs transition-colors text-center" wire:navigate>
+                                <flux:icon name="heart" class="w-4 h-4 text-pink-700 shrink-0" />
                                 <span>Satisfação</span>
                             </a>
 

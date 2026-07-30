@@ -28,9 +28,12 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="pb-20 sm:pb-6">
                 {{ $slot }}
             </main>
+
+            <!-- Mobile Bottom Navigation Bar -->
+            <livewire:layout.bottom-navigation />
         </div>
     </body>
 </html>

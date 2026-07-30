@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -12,7 +13,6 @@ Route::middleware('auth')->group(function () {
     Volt::route('/satisfacao', 'pesquisa-satisfacao')->name('pesquisa.satisfacao');
     Volt::route('/ranking', 'ranking')->name('ranking');
     Route::view('/profile', 'profile')->name('profile');
-    Route::post('/logout', App\Livewire\Actions\Logout::class)->name('logout');
+    Route::post('/logout', Logout::class)->name('logout');
 });
 require __DIR__.'/auth.php';
-

@@ -466,12 +466,12 @@ $rejeitar = function (string $id) {
                     </div>
                 </div>
 
-                <!-- Botões de Ação -->
+                <!-- Botões de Ação (Alvos de Toque 44px+) -->
                 <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-100 pt-4">
-                    <flux:button type="button" wire:click="fecharAvaliacao" variant="filled">Cancelar</flux:button>
-                    <flux:button type="button" wire:click="salvarAvaliacao(false)" variant="danger">Rejeitar Necessidade</flux:button>
-                    <flux:button type="button" wire:click="salvarAvaliacao(null)" variant="filled">Salvar Rascunho de Avaliação</flux:button>
-                    <flux:button type="button" wire:click="salvarAvaliacao(true)" variant="primary">Aprovar Necessidade</flux:button>
+                    <flux:button type="button" wire:click="fecharAvaliacao" variant="filled" class="min-h-[44px]">Cancelar</flux:button>
+                    <flux:button type="button" wire:click="salvarAvaliacao(false)" variant="danger" class="min-h-[44px]">Rejeitar Necessidade</flux:button>
+                    <flux:button type="button" wire:click="salvarAvaliacao(null)" variant="filled" class="min-h-[44px]">Salvar Rascunho de Avaliação</flux:button>
+                    <flux:button type="button" wire:click="salvarAvaliacao(true)" variant="primary" class="min-h-[44px]">Aprovar Necessidade</flux:button>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TipoRole;
 use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +22,7 @@ test('cabecalho exibe Acesse para visitantes e menu de perfil/sair para usuarios
 });
 
 test('componente welcome permite edicao inline de produto', function () {
-    $user = User::factory()->create(['tip_role' => \App\Enums\TipoRole::ADMIN]);
+    $user = User::factory()->create(['tip_role' => TipoRole::ADMIN]);
     $novoGestor = User::factory()->create(['name' => 'Novo Gestor']);
 
     $produto = Produto::create([

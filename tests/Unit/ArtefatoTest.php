@@ -3,6 +3,9 @@
 use App\Enums\AcaoArtefato;
 use App\Enums\CategoriaArtefato;
 use App\Models\Artefato;
+use Tests\TestCase;
+
+uses(TestCase::class);
 
 test('calcula pontos de artefato corretamente baseado no peso de config', function () {
     $artefatoTela = new Artefato([

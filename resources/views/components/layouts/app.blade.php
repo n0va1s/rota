@@ -35,8 +35,8 @@
                     </div>
                 </a>
 
-                <!-- Navegação Superior Horizontal -->
-                <nav class="top-nav" aria-label="Navegação principal">
+                <!-- Navegação Superior Horizontal (Apenas Desktop) -->
+                <nav class="top-nav hidden sm:flex" aria-label="Navegação principal">
                     <a href="{{ route('necessidade.nova') }}" class="nav-pill @if(request()->routeIs('necessidade.nova')) active @endif">
                         <span>Necessidade</span>
                     </a>
@@ -90,9 +90,12 @@
         </header>
 
         <!-- Conteúdo Principal -->
-        <main id="conteudo-principal" class="main-content">
+        <main id="conteudo-principal" class="main-content pb-20 sm:pb-6">
             {{ $slot }}
         </main>
+
+        <!-- Mobile Bottom Navigation Bar (Fixo Inferior) -->
+        <livewire:layout.bottom-navigation />
     </div>
 
     @fluxScripts
